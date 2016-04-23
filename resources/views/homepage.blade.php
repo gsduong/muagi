@@ -17,7 +17,7 @@
     <!--GREEN STYLE VERSION IS BY DEFAULT, USE ANY ONE STYLESHEET FROM TWO STYLESHEETS (green or red) HERE-->
     <link href="{{ asset('assets/css/themes/green.css')}}" id="mainCSS" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css' />
   </head>
   <body >
     <div class="switcher" style="left:-50px;">
