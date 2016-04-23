@@ -462,8 +462,4 @@ Route::group(['prefix' => 'api/v1'], function(){
 
 
 Route::get('api/temporary/channels', function(){
-	// $channels = App\Channels::all();
-	// return Response::json($channels);
-	$json = file_get_contents("http://homeshopping.esy.es/api/temporary/channels");
-	echo($json);
 });
