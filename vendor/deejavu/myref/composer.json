@@ -1,0 +1,14 @@
+{
+    "name": "deejavu/myref",
+    "description": "A nicer print_r/var_dump alternative for laravel",
+    "keywords": ["debug","var_dump", "print_r"],
+    "homepage": "https://github.com/DeeJaVu/myref",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "files": [ "ref.php" ]
+    }
+}
