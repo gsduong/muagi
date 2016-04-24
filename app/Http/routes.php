@@ -360,8 +360,8 @@ Route::group(['prefix' => 'api/v1'], function(){
 		$today = $clock->get_today_date_GMT_7("Y-m-d");
 		$current_time_hh_mm_GMT_7 = $clock->get_current_time_GMT_7("H:i");
 		$current_unix_time_UTC = $clock->get_unix_time_UTC_from_GMT_7($current_time_hh_mm_GMT_7, $today);
-		$pattern = $today.'%';
-		$products = DB::table('products')->where('created_at', 'LIKE', $pattern)->get();
+		// $pattern = $today.'%';
+		$products = DB::table('products')->where('start_date', $today)->get();
 		$array = array();
 
 		function item_type($start_time, $end_time, $current_time){
@@ -375,7 +375,7 @@ Route::group(['prefix' => 'api/v1'], function(){
 		}
 		foreach ($products as $product) {
 			if (($item_type = item_type($product->start_time, $product->end_time, $current_unix_time_UTC)) != -1) {
-				array_push($array, new App\ExternalClasses\Item($product, $today, $item_type));
+				array_push($array, new App\ExternalClasses\Item($product, $item_type));
 			}
 		}
 
@@ -414,7 +414,7 @@ Route::group(['prefix' => 'cron'], function(){
 			$start_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_start_time, $start_date);
 			$end_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
 
-			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time]);
+			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time, 'start_date' => $today]);
 			array_push($array, $item);
 		}
 		return Response::json($array);

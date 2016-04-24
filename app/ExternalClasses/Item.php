@@ -15,10 +15,10 @@ class Item {
 	var $video_link;
 	var $title;
 	var $item_type;
-	function __construct($product, $start_date, $item_type){
+	function __construct($product, $item_type){
 		$this->start_time = $product->start_time;
 		$this->end_time = $product->end_time;
-		$this->start_date = $start_date;
+		$this->start_date = $product->start_date;
 		$this->new_price = $product->new_price;
 		$this->old_price = $product->old_price;
 		$this->channel_id = $product->channel_id;
