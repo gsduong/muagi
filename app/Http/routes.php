@@ -356,110 +356,67 @@ Route::group(['prefix' => 'api/v1'], function(){
 	});
 
 	Route::get('broadcast', function(){
+		$clock = new App\ExternalClasses\MyClock();
+		$today = $clock->get_today_date_GMT_7("Y-m-d");
+		$current_time_hh_mm_GMT_7 = $clock->get_current_time_GMT_7("H:i");
+		$current_unix_time_UTC = $clock->get_unix_time_UTC_from_GMT_7($current_time_hh_mm_GMT_7, $today);
+		$pattern = $today.'%';
+		$products = DB::table('products')->where('created_at', 'LIKE', $pattern)->get();
+		$array = array();
 
-		class Item{
-			var $item_type;
-			var $title;
-			var $product_link;
-			var $image_link;
-			var $available_time;
-			var $channel_id;
-			var $video_link;
-			var $gmt7_start_time;
-			var $gmt7_end_time;
-			var $new_price;
-			var $old_price;
-			var $description;
-			var $start_date;
-			var $end_date;
-			var $start_time;
-			var $end_time;
-			function Item($item_type, $title, $link, $img, $gmt7_start_time, $gmt7_end_time, $start_time, $end_time, $available_time, $channel_id, $video_link, $description, $new_price, $old_price, $start_date, $end_date){
-				$this->item_type = $item_type;
-				$this->title = $title;
-				$this->product_link = $link;
-				$this->image_link = $img;
-				$this->channel_id = $channel_id;
-				$this->video_link = $video_link;
-				$this->available_time = $available_time;
-				$this->description = $description;
-				$this->gmt7_start_time = $gmt7_start_time;
-				$this->gmt7_end_time = $gmt7_end_time;
-				$this->new_price = $new_price;
-				$this->old_price = $old_price;
-				$this->start_date = $start_date;
-				$this->end_date = $end_date;
-				$this->start_time = $start_time;
-				$this->end_time = $end_time;
+		function item_type($start_time, $end_time, $current_time){
+			if ($current_time < $start_time) {
+				return 1;
+			}
+			elseif ($current_time >= $start_time && $current_time <= $end_time) {
+				return 0;
+			}
+			else return -1;
+		}
+		foreach ($products as $product) {
+			if (($item_type = item_type($product->start_time, $product->end_time, $current_unix_time_UTC)) != -1) {
+				array_push($array, new App\ExternalClasses\Item($product, $today, $item_type));
 			}
 		}
 
-		function get_current_time_ISO_8601_GMT_7(){
-			return gmdate("Y-m-d\TH:i:s\Z", time() + 7*60*60);
-		}
+		return Response::json($array);
+	});
 
-		function get_today_date_GMT_7($dateFormat){
-			return gmdate($dateFormat, time() + 7*60*60);
-		}
+});
 
-		function get_nextday_date_GMT_7($dateFormat){
-			return gmdate($dateFormat, time() + 7*60*60 + 24*60*60);
-		}
+Route::group(['prefix' => 'cron'], function(){
+	Route::get('products', function(){
+		$clock = new App\ExternalClasses\MyClock();
+		
+		$today = $clock->get_today_date_GMT_7("Y-m-d");
+		$nextDay = $clock->get_nextday_date_GMT_7("Y-m-d");
 
-		function get_current_time_GMT_7($timeFormat){
-			return gmdate($timeFormat, time() + 7*60*60);
-		}
-		function get_unix_time_UTC_from_GMT_7($time_string_hh_mm, $date_string_yyyy_mm_dd){ // ex 22:00, 2014-01-01 GMT + 7
-			$time_string_hh_mm = $time_string_hh_mm.":00"; // H:i:s
-			$date_string = $date_string_yyyy_mm_dd." ".$time_string_hh_mm; // GMT+7
-			return (strtotime($date_string) - 7*60*60);
-		}
-		function item_type($available_time, $start_date, $end_date){
-			
-			$currentDate = get_today_date_GMT_7("Y-m-d");
-			if ($currentDate >= $end_date) return 2;
-			elseif ($currentDate == $start_date){
-				list($gmt7_start_time, $gmt7_end_time) = explode("-", $available_time);
-				$currentTime = get_current_time_GMT_7("H:i");
-				if ($currentTime < $gmt7_start_time) return 1;
-				if ($currentTime >= $gmt7_start_time && $currentTime <= $gmt7_end_time) return 0;
-				return -1;
-			}
-		}
-		//read api from scj.vn
-
-		$currentTime = get_current_time_GMT_7("H:i");
-		$today = get_today_date_GMT_7("Y-m-d");
-		$nextDay = get_nextday_date_GMT_7("Y-m-d");
+		/* For SCJ channel*/
+		$baseURL = 'http://www.scj.vn';
 		$API_URL = "http://www.scj.vn/index.php?option=com_broadcasting&task=getEvent&lang=vi&type=day&start=".$today."&end=".$nextDay;
-
 		$json = file_get_contents($API_URL);
 		$responses = json_decode($json);
 		$start_date = $today;
 		$end_date = $nextDay;
-		//end of api reading
 		$array = array();
-		
 		foreach ($responses as $product) {
+
 			$available_time = $product->scjtime;
 			$channel_id = 1;
 			$title = $product->product_name;
-			$link = $product->ori_url;
-			$img = $product->url;
-
-			list($gmt7_start_time, $gmt7_end_time) = explode("-", $available_time);
-			get_unix_time_UTC_from_GMT_7($gmt7_start_time, $start_date);
-			$start_time = get_unix_time_UTC_from_GMT_7($gmt7_start_time, $start_date);
-			$end_time = get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
-			$new_price = $product->marketprice;
-			$old_price = $product->basic_price;
+			$image_link = $product->ori_url;
+			$video_link = "rtmp://vtsstr6.sctv.vn/colive";
+			$product_link = $baseURL.($product->scjurl);
 			$description = "Null";
-			array_push($array, new Item(item_type($available_time, $start_date, $end_date), $title, $link, $img, $gmt7_start_time, $gmt7_end_time, $start_time, $end_time, $available_time, $channel_id, "rtmp://vtsstr6.sctv.vn/colive", $description, $new_price, $old_price, $start_date, $end_date));
+			$old_price = $product->basic_price;
+			$new_price = $product->marketprice;
+			list($gmt7_start_time, $gmt7_end_time) = explode("-", $available_time);
+			$start_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_start_time, $start_date);
+			$end_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
+
+			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time]);
+			array_push($array, $item);
 		}
 		return Response::json($array);
 	});
-});
-
-
-Route::get('api/temporary/channels', function(){
 });

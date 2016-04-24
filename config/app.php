@@ -175,6 +175,7 @@ return [
 		Laravelista\Ekko\EkkoServiceProvider::class,
 		Arcanedev\Localization\LocalizationServiceProvider::class,
 		Arcanedev\LogViewer\LogViewerServiceProvider::class,
+		Barryvdh\Debugbar\ServiceProvider::class,
 	],
 
 	/*

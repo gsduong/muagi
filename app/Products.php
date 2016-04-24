@@ -12,11 +12,11 @@ class Products extends Model
 
     protected $table = 'products';
     protected $dates = ['deleted_at'];
-    // protected $dateFormat = 'U';
-    protected $fillable = ['title', 'video_link', 'product_link', 'channel_id', 'old_price', 'new_price', 'description', 'start_time', 'end_time', 'available_time'];
+
+    protected $fillable = ['title', 'video_link', 'product_link', 'image_link', 'channel_id', 'old_price', 'new_price', 'description', 'start_time', 'end_time', 'available_time'];
 
     public function channel(){
-    	return $this->belongsTo('App\Channels');
+    	return $this->belongsTo('App\Channels', 'channel_id');
     }
 
 }

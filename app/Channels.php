@@ -16,6 +16,6 @@ class Channels extends Model
     protected $fillable = ['name', 'logo', 'homepage', 'hotline', 'description'];
 
     public function products(){
-    	return $this->hasMany('App\Products');
+    	return $this->hasMany('App\Products', 'channel_id');
     }
 }
