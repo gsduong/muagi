@@ -18,4 +18,8 @@ class Channels extends Model
     public function products(){
     	return $this->hasMany('App\Products', 'channel_id');
     }
+
+    public function getAllProducts(){
+    	return $this->hasMany('App\AllProduct', 'channel_id');
+    }
 }

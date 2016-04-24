@@ -419,4 +419,66 @@ Route::group(['prefix' => 'cron'], function(){
 		}
 		return Response::json($array);
 	});
+
+	Route::get('test', function(){
+		$clock = new App\ExternalClasses\MyClock();
+		
+		$today = $clock->get_today_date_GMT_7("Y-m-d");
+		$nextDay = $clock->get_nextday_date_GMT_7("Y-m-d");
+
+		/* For Lotte channel*/
+		$lotte_baseURL = 'http://lottedatviet.vn/index.do';
+		$lotte_API_URL = "http://lottedatviet.vn/display/tvScheduleList.json";
+		$lotte_json = file_get_contents($lotte_API_URL);
+		$lotte_responses = json_decode($lotte_json);
+		$start_date = $today;
+		$end_date = $nextDay;
+		$lotte_products = array();
+		foreach ($lotte_responses->goodsList as $element) {
+			array_push($lotte_products, ['title' => $element->goodsName]);
+		}
+
+		echo(json_encode($lotte_products));
+		// $client = new Goutte\Client();
+		// $crawler = $client->request('GET', $url_to_crawl);
+
+		// $channel_id = 2;
+		// $video_link = "rtmp://vtsstr6.sctv.vn/colive/";
+
+		// if($crawler->filterXPath($domSelector.'/span[@class="broad_time_bg"]/text()')->count()){
+		// 	$currentTimeString = $crawler->filterXPath($domSelector.'/span[@class="broad_time_bg"]/text()')->text();
+		// 	list($start_time, $end_time) = explode("-", $currentTimeString);
+		// 	$available_time = $currentTimeString;
+		// 	$item_link = $baseURL.($crawler->filterXPath($domSelector.'//h3[@class="broadname"]/a/@href')->text());
+		// 	$title = $crawler->filterXPath($domSelector.'//h3[@class="broadname"]/a')->text();
+		// 	$image_link = $crawler->filterXPath($domSelector.'/div[contains(@class, "broad_img") and contains(@class, "fleft")]/a/img/@data-original')->text();
+		// 	//crawl price, description
+		// 	$item_client = new Goutte\Client();
+		// 	$item_crawler = $item_client->request('GET', $item_link);
+		// 	$old_price = ($item_crawler->filterXPath('//div[@class="detailBox"]//span[contains(@class, "price_regular")]/b/text()')->count() == 0) ? "" : explode("đ", $item_crawler->filterXPath('//div[@class="detailBox"]//span[contains(@class, "price_regular")]/b/text()')->text())[0];
+			 
+		// 	$price_string = $item_crawler->filterXPath('//div[@class="detailBox"]//span[contains(@class, "price") and contains(@class, "col2")]/text()[1]')->text();
+		// 	$new_price = explode("đ", $price_string)[0];
+		// 	$description = "Description";
+		// 	array_push($array, new Item("live", $title, $item_link, $image_link, $start_time, $end_time, $available_time, $channel_id, $video_link, $description, $new_price, $old_price));
+		// }
+
+	});
+
+	Route::get('all', function(){ // crawl all products to save in database
+		/* For Lotte */
+		$lotte_baseURL = "http://lottedatviet.vn/index.do";
+
+
+		/* For SCJ */
+		$scj_baseURL = "http://www.scj.vn";
+		$scj_client = new Goutte\Client();
+		$scj_crawler = $scj_client->request('GET', $scj_baseURL);
+		$scj_category_domselector = '//*[contains(@class, "ilevel_0") or contains(@class, "ilevel_1")]/a/@href';
+		$cat_links = array();
+		$cat_links = $scj_crawler->filterXPath($scj_category_domselector)->each(function($node, $i){
+			return ['url' => "http://www.scj.vn".($node->text())];
+		});
+		echo json_encode($cat_links);
+	});
 });
