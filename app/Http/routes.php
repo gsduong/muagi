@@ -348,7 +348,10 @@ Route::get('/', function(){
 
 Route::group(['prefix' => 'api/v1'], function(){
 	Route::get('products', function (){
-		return Response::json(App\Products::all());
+		$clock = new App\ExternalClasses\MyClock();
+		$today = $clock->get_today_date_GMT_7("Y-m-d");
+		return Response::json(App\Products::where('start_date', $today)->get());
+
 	});
 
 	Route::get('channels', function(){
@@ -361,7 +364,7 @@ Route::group(['prefix' => 'api/v1'], function(){
 		$current_time_hh_mm_GMT_7 = $clock->get_current_time_GMT_7("H:i");
 		$current_unix_time_UTC = $clock->get_unix_time_UTC_from_GMT_7($current_time_hh_mm_GMT_7, $today);
 		// $pattern = $today.'%';
-		$products = DB::table('products')->where('start_date', $today)->get();
+		$products = DB::table('products')->where('start_date', $today)->orderBy('start_time', 'asc')->get();
 		$array = array();
 
 		function item_type($start_time, $end_time, $current_time){
