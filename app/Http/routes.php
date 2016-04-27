@@ -396,12 +396,14 @@ Route::group(['prefix' => 'cron'], function(){
 
 		/* For SCJ channel*/
 		$baseURL = 'http://www.scj.vn';
+		$mobileURL = 'http://www.m.scj.vn/#/detail/';
 		$API_URL = "http://www.scj.vn/index.php?option=com_broadcasting&task=getEvent&lang=vi&type=day&start=".$today."&end=".$nextDay;
 		$json = file_get_contents($API_URL);
 		$responses = json_decode($json);
 		$start_date = $today;
 		$end_date = $nextDay;
 		$array = array();
+		$client = new Goutte\Client();
 		foreach ($responses as $product) {
 
 			$available_time = $product->scjtime;
@@ -410,62 +412,21 @@ Route::group(['prefix' => 'cron'], function(){
 			$image_link = $product->ori_url;
 			$video_link = "rtmp://vtsstr6.sctv.vn/colive";
 			$product_link = $baseURL.($product->scjurl);
-			$description = "Null";
 			$old_price = $product->basic_price;
 			$new_price = $product->marketprice;
 			list($gmt7_start_time, $gmt7_end_time) = explode("-", $available_time);
 			$start_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_start_time, $start_date);
 			$end_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
 
+			//crawl mobile link for description
+			$crawler = $client->request('GET', $product_link);
+			$scj_code = $crawler->filterXPath('//div[contains(@class,"infoWrap") and contains(@class,"msp")]/span[@class="col2"]/text()')->text();
+			$description = $mobileURL.trim($scj_code);
+
 			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time, 'start_date' => $today]);
 			array_push($array, $item);
 		}
 		return Response::json($array);
-	});
-
-	Route::get('test', function(){
-		$clock = new App\ExternalClasses\MyClock();
-		
-		$today = $clock->get_today_date_GMT_7("Y-m-d");
-		$nextDay = $clock->get_nextday_date_GMT_7("Y-m-d");
-
-		/* For Lotte channel*/
-		$lotte_baseURL = 'http://lottedatviet.vn/index.do';
-		$lotte_API_URL = "http://lottedatviet.vn/display/tvScheduleList.json";
-		$lotte_json = file_get_contents($lotte_API_URL);
-		$lotte_responses = json_decode($lotte_json);
-		$start_date = $today;
-		$end_date = $nextDay;
-		$lotte_products = array();
-		foreach ($lotte_responses->goodsList as $element) {
-			array_push($lotte_products, ['title' => $element->goodsName]);
-		}
-
-		echo(json_encode($lotte_products));
-		// $client = new Goutte\Client();
-		// $crawler = $client->request('GET', $url_to_crawl);
-
-		// $channel_id = 2;
-		// $video_link = "rtmp://vtsstr6.sctv.vn/colive/";
-
-		// if($crawler->filterXPath($domSelector.'/span[@class="broad_time_bg"]/text()')->count()){
-		// 	$currentTimeString = $crawler->filterXPath($domSelector.'/span[@class="broad_time_bg"]/text()')->text();
-		// 	list($start_time, $end_time) = explode("-", $currentTimeString);
-		// 	$available_time = $currentTimeString;
-		// 	$item_link = $baseURL.($crawler->filterXPath($domSelector.'//h3[@class="broadname"]/a/@href')->text());
-		// 	$title = $crawler->filterXPath($domSelector.'//h3[@class="broadname"]/a')->text();
-		// 	$image_link = $crawler->filterXPath($domSelector.'/div[contains(@class, "broad_img") and contains(@class, "fleft")]/a/img/@data-original')->text();
-		// 	//crawl price, description
-		// 	$item_client = new Goutte\Client();
-		// 	$item_crawler = $item_client->request('GET', $item_link);
-		// 	$old_price = ($item_crawler->filterXPath('//div[@class="detailBox"]//span[contains(@class, "price_regular")]/b/text()')->count() == 0) ? "" : explode("đ", $item_crawler->filterXPath('//div[@class="detailBox"]//span[contains(@class, "price_regular")]/b/text()')->text())[0];
-			 
-		// 	$price_string = $item_crawler->filterXPath('//div[@class="detailBox"]//span[contains(@class, "price") and contains(@class, "col2")]/text()[1]')->text();
-		// 	$new_price = explode("đ", $price_string)[0];
-		// 	$description = "Description";
-		// 	array_push($array, new Item("live", $title, $item_link, $image_link, $start_time, $end_time, $available_time, $channel_id, $video_link, $description, $new_price, $old_price));
-		// }
-
 	});
 
 	Route::get('all', function(){ // crawl all products to save in database
