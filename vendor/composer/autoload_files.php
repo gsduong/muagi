@@ -27,4 +27,5 @@ return array(
     'f0906e6318348a765ffb6eb24e0d0938' => $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
     '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     'bd226b48b387c4d5a10d2db2e7a963ae' => $baseDir . '/app/Support/helpers.php',
+    '603c8bf00f45a35e321b13c083807098' => 'phar://' . $baseDir . '/app/ExternalLibs/goutte.phar',
 );
