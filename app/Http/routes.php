@@ -403,6 +403,7 @@ Route::group(['prefix' => 'cron'], function(){
 		$start_date = $today;
 		$end_date = $nextDay;
 		$array = array();
+		$description = "Not available";
 		// $client = new Goutte\Client();
 		foreach ($responses as $product) {
 
