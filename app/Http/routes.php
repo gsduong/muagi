@@ -436,8 +436,8 @@ Route::group(['prefix' => 'cron'], function(){
 
 		/* For SCJ */
 		$scj_baseURL = "http://www.scj.vn";
-		// $scj_client = new Goutte\Client();
-		$scj_crawler = Goutte::request('GET', $scj_baseURL);
+		$scj_client = new \Goutte\Client();
+		$scj_crawler = $scj_client->request('GET', $scj_baseURL);
 		$scj_category_domselector = '//*[contains(@class, "ilevel_0") or contains(@class, "ilevel_1")]/a/@href';
 		$cat_links = array();
 		$cat_links = $scj_crawler->filterXPath($scj_category_domselector)->each(function($node, $i){
