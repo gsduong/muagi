@@ -279,7 +279,11 @@ class Validator implements ValidatorContract
 
         if (call_user_func($callback, $payload)) {
             foreach ((array) $attribute as $key) {
-                $this->mergeRules($key, $rules);
+                if (Str::contains($key, '*')) {
+                    $this->explodeRules([$key => $rules]);
+                } else {
+                    $this->mergeRules($key, $rules);
+                }
             }
         }
     }
@@ -834,6 +838,16 @@ class Validator implements ValidatorContract
         $data = Arr::get($this->data, $parameters[0]);
 
         $values = array_slice($parameters, 1);
+
+        if (is_bool($data)) {
+            array_walk($values, function (&$value) {
+                if ($value === 'true') {
+                    $value = true;
+                } elseif ($value === 'false') {
+                    $value = false;
+                }
+            });
+        }
 
         if (in_array($data, $values)) {
             return $this->validateRequired($attribute, $value);
