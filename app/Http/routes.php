@@ -403,8 +403,8 @@ Route::group(['prefix' => 'cron'], function(){
 		$start_date = $today;
 		$end_date = $nextDay;
 		$array = array();
-		$description = "Not available";
-		// $client = new Goutte\Client();
+		// $description = "Not available";
+		$client = new Goutte\Client();
 		foreach ($responses as $product) {
 
 			$available_time = $product->scjtime;
@@ -420,9 +420,9 @@ Route::group(['prefix' => 'cron'], function(){
 			$end_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
 
 			//crawl mobile link for description
-			// $crawler = $client->request('GET', $product_link);
-			// $scj_code = $crawler->filterXPath('//div[contains(@class,"infoWrap") and contains(@class,"msp")]/span[@class="col2"]/text()')->text();
-			// $description = $mobileURL.trim($scj_code);
+			$crawler = $client->request('GET', $product_link);
+			$scj_code = $crawler->filterXPath('//div[contains(@class,"infoWrap") and contains(@class,"msp")]/span[@class="col2"]/text()')->text();
+			$description = $mobileURL.trim($scj_code);
 
 			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time, 'start_date' => $today]);
 			array_push($array, $item);
