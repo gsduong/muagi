@@ -378,13 +378,18 @@ Route::group(['prefix' => 'api/v1'], function(){
 		}
 		foreach ($products as $product) {
 			if (($item_type = item_type($product->start_time, $product->end_time, $current_unix_time_UTC)) != -1) {
-				array_push($array, new App\ExternalClasses\Item($product, $item_type));
+				array_push($array, new App\ExternalClasses\NoDesItem($product, $item_type));
 			}
 		}
 
 		return Response::json($array);
 	});
 
+	Route::get('product/detail/{id}/', function($id){
+    	$product = App\Products::find($id);
+    	if(empty($product)) return Response::json(["status" => 404, "description" => "<p>Not Found</p>"]);
+    	else return Response::json(["status" => 200, "description" => $product->description]);
+	});
 });
 
 Route::group(['prefix' => 'cron'], function(){
@@ -403,7 +408,7 @@ Route::group(['prefix' => 'cron'], function(){
 		$start_date = $today;
 		$end_date = $nextDay;
 		$array = array();
-		// $description = "Not available";
+		$description = "";
 		$client = new Goutte\Client();
 		foreach ($responses as $product) {
 
@@ -412,18 +417,23 @@ Route::group(['prefix' => 'cron'], function(){
 			$title = $product->product_name;
 			$image_link = $product->ori_url;
 			$video_link = "rtmp://vtsstr6.sctv.vn/colive";
-			$product_link = $baseURL.($product->scjurl);
+			$link_to_crawl = $baseURL.($product->scjurl);
 			$old_price = $product->basic_price;
 			$new_price = $product->marketprice;
 			list($gmt7_start_time, $gmt7_end_time) = explode("-", $available_time);
 			$start_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_start_time, $start_date);
 			$end_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
 
-			//crawl mobile link for description
-			$crawler = $client->request('GET', $product_link);
+			//crawl mobile link for product code, and mobile link of product
+			$crawler = $client->request('GET', $link_to_crawl);
 			$scj_code = $crawler->filterXPath('//div[contains(@class,"infoWrap") and contains(@class,"msp")]/span[@class="col2"]/text()')->text();
-			$description = $mobileURL.trim($scj_code);
+			$product_link = $mobileURL.trim($scj_code); //normalize
 
+			//crawl html string of description
+			$array = $crawler->filterXPath('//*[@id="scj_product_info"]//div[@class="info_wrap"]/*')->each(function($node, $i){
+				return $node->html();
+			});
+			$description = implode("", $array);
 			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time, 'start_date' => $today]);
 			array_push($array, $item);
 		}
