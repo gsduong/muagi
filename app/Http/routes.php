@@ -457,3 +457,23 @@ Route::group(['prefix' => 'cron'], function(){
 		echo json_encode($cat_links);
 	});
 });
+
+Route::group(['prefix' => 'api/v2'], function(){
+	Route::get('test', function(){
+		echo "fuck";
+	});
+
+	Route::post('login', [
+		'as' => 'user.login',
+		'uses' => 'Api\v2\MobileAuthController@postLogin'
+	]);
+
+	Route::get('logout', [
+		'as' => 'user.logout',
+		'uses' => 'Api\v2\MobileAuthController@logout'
+	]);
+
+	Route::get('login', function(){
+		return view('frontend.test.login');
+	});
+});
