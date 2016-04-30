@@ -2,6 +2,7 @@
 namespace App\ExternalClasses;
 
 class NoDesItem {
+	var $id;
 	var $start_date;
 	var $start_time;
 	var $end_time;
@@ -16,6 +17,7 @@ class NoDesItem {
 	var $title;
 	var $item_type;
 	function __construct($product, $item_type){
+		$this->id = $product->id;
 		$this->start_time = $product->start_time;
 		$this->end_time = $product->end_time;
 		$this->start_date = $product->start_date;
