@@ -31,4 +31,12 @@ class Role extends Model {
 	}
 
 	protected $fillable = ['name', 'display_name', 'description'];
+
+	public static function findByName($role_name){
+		$role = Role::where('name', $role_name)->first();
+		if (count($role) > 0) {
+			return $role->id;
+		}
+		return 0;
+	}
 }

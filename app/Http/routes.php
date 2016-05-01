@@ -458,22 +458,35 @@ Route::group(['prefix' => 'cron'], function(){
 	});
 });
 
-Route::group(['prefix' => 'api/v2'], function(){
-	Route::get('test', function(){
-		echo "fuck";
+Route::group(['middleware' => 'web'], function(){
+
+	Route::group(['prefix' => 'api/v2'], function(){
+		Route::get('test', function(){
+			echo "fuck";
+		});
+
+		Route::post('login', [
+			'as' => 'user.login',
+			'uses' => 'Api\v2\MobileAuthController@postLogin'
+		]);
+
+		Route::get('logout', [
+			'as' => 'user.logout',
+			'uses' => 'Api\v2\MobileAuthController@logout'
+		]);
+
+		// Route::get('login', function(){
+		// 	return view('frontend.test.login');
+		// });
+
+		// Route::get('register', function(){
+		// 	return view('frontend.test.register');
+		// });
+
+		Route::post('register', [
+			'as' => 'user.register',
+			'uses' => 'Api\v2\MobileAuthController@postRegister'
+		]);
 	});
 
-	Route::post('login', [
-		'as' => 'user.login',
-		'uses' => 'Api\v2\MobileAuthController@postLogin'
-	]);
-
-	Route::get('logout', [
-		'as' => 'user.logout',
-		'uses' => 'Api\v2\MobileAuthController@logout'
-	]);
-
-	Route::get('login', function(){
-		return view('frontend.test.login');
-	});
 });
