@@ -430,10 +430,10 @@ Route::group(['prefix' => 'cron'], function(){
 			$product_link = $mobileURL.trim($scj_code); //normalize
 
 			//crawl html string of description
-			$array = $crawler->filterXPath('//*[@id="scj_product_info"]//div[@class="info_wrap"]/*')->each(function($node, $i){
+			$list_description = $crawler->filterXPath('//*[@id="scj_product_info"]//div[@class="info_wrap"]/*')->each(function($node, $i){
 				return $node->html();
 			});
-			$description = implode("", $array);
+			$description = implode("", $list_description);
 			$item = App\Products::firstOrCreate(['title' => $title, 'available_time' => $available_time, 'channel_id' => $channel_id, 'image_link' => $image_link, 'video_link' => $video_link, 'product_link' => $product_link, 'description' => $description, 'old_price' => $old_price, 'new_price' => $new_price, 'start_time' => $start_time, 'end_time' => $end_time, 'start_date' => $today]);
 			array_push($array, $item);
 		}
