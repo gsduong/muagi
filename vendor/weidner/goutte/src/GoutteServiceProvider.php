@@ -1,4 +1,5 @@
-<?php namespace Weidner\Goutte;
+<?php 
+namespace Weidner\Goutte;
 
 use Weidner\Goutte\Goutte;
 use Illuminate\Support\ServiceProvider;
