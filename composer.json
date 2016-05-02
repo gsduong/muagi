@@ -40,8 +40,7 @@
             "database"
         ],
         "files": [
-            "app/Support/helpers.php",
-            "app/ExternalLibs/goutte.phar"
+            "app/Support/helpers.php"
         ],
         "psr-4": {
             "App\\": "app/"
