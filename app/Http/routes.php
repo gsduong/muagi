@@ -409,7 +409,7 @@ Route::group(['prefix' => 'cron'], function(){
 		$end_date = $nextDay;
 		$array = array();
 		$description = "";
-		$client = new Goutte\Client();
+		
 		foreach ($responses as $product) {
 
 			$available_time = $product->scjtime;
@@ -425,6 +425,7 @@ Route::group(['prefix' => 'cron'], function(){
 			$end_time = $clock->get_unix_time_UTC_from_GMT_7($gmt7_end_time, $start_date);
 
 			//crawl mobile link for product code, and mobile link of product
+			$client = new Goutte\Client();
 			$crawler = $client->request('GET', $link_to_crawl);
 			$scj_code = $crawler->filterXPath('//div[contains(@class,"infoWrap") and contains(@class,"msp")]/span[@class="col2"]/text()')->text();
 			$product_link = $mobileURL.trim($scj_code); //normalize
