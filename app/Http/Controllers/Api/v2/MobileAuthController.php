@@ -38,11 +38,11 @@ class MobileAuthController extends Controller
     }
     //
     public function postLogin(Request $request){
-    	$credentials = array('username' => $request->username, 'password' => $request->password);
+    	$credentials = array('email' => $request->email, 'password' => $request->password);
     	if(!Auth::validate($credentials)){
     		return response()->json([
                 'status' => false,
-                'data' => array('message' => 'Incorrect username or password')
+                'data' => array('message' => 'Email hoặc mật khẩu không đúng')
             ]);
     	}
     	else {
@@ -66,7 +66,7 @@ class MobileAuthController extends Controller
         Auth::logout();
     	return response()->json([
     		'status' => true,
-            'data' => array('message' => 'Logged out successfully!')
+            'data' => array('message' => 'Thoát đăng nhập thành công')
     	]);
     }
 
@@ -81,13 +81,10 @@ class MobileAuthController extends Controller
 
         $errors = array();
         if (count(App\User::where('email', $request->email)->get()) > 0) {
-            array_push($errors, "Email already exists!");
+            array_push($errors, "Email đã tồn tại");
         }
         if (count(App\User::where('username', $request->username)->get()) > 0) {
-            array_push($errors, "Username already exists!");
-        }
-        if ($request->password != $request->password_confirmation) {
-            array_push($errors, "Password confirmation does not match!");
+            array_push($errors, "Tên đăng nhập đã tồn tại");
         }
 
         if (count($errors) > 0) {
@@ -100,13 +97,6 @@ class MobileAuthController extends Controller
         $status = settings('reg_email_confirmation')
         ? UserStatus::UNCONFIRMED
         : UserStatus::ACTIVE;
-
-        // $data = [
-        //     'username' => $request->username,
-        //     'email' => $request->email,
-        //     'password' => bcrypt($request->password),
-        //     'status' => $status
-        // ];
 
         try {
             $user = $this->users->create(array_merge(
