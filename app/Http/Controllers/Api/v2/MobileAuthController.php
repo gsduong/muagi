@@ -47,14 +47,14 @@ class MobileAuthController extends Controller
             ]);
         }
     	$credentials = array('email' => $request->email, 'password' => $request->password);
-    	if(!Auth::validate($credentials)){
+    	if(!Auth::attempts(['email' => $request->email, 'password' => $request->password])){
     		return response()->json([
                 'status' => false,
                 'data' => array('message' => 'Email hoặc mật khẩu không đúng')
             ]);
     	}
     	else {
-    		$user = Auth::getProvider()->retrieveByCredentials($credentials);
+    		$user = Auth::getProvider()->retrieveByCredentials($request);
 
 			if ($user->isBanned()) return response()->json(['status' => false]);
 
@@ -137,5 +137,37 @@ class MobileAuthController extends Controller
                 'user' => $user
             ]
         ]);
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginUsername() {
+        return 'username';
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  Request  $request
+     * @return array
+     */
+    protected function getCredentials(Request $request) {
+        // The form field for providing username or password
+        // have name of "username", however, in order to support
+        // logging users in with both (username and email)
+        // we have to check if user has entered one or another
+        $usernameOrEmail = $request->get($this->loginUsername());
+
+        if ($this->isEmail($usernameOrEmail)) {
+            return [
+                'email' => $usernameOrEmail,
+                'password' => $request->get('password'),
+            ];
+        }
+
+        return $request->only($this->loginUsername(), 'password');
     }
 }
