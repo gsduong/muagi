@@ -38,6 +38,14 @@ class MobileAuthController extends Controller
     }
     //
     public function postLogin(Request $request){
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            return response()->json([
+                'status' => true,
+                'data' => array('user' => $user)
+            ]);
+        }
     	$credentials = array('email' => $request->email, 'password' => $request->password);
     	if(!Auth::validate($credentials)){
     		return response()->json([
@@ -52,7 +60,8 @@ class MobileAuthController extends Controller
 
     		Auth::login($user);
 
-    		// event(new LoggedIn($user));
+    		$this->users->update($user->id, ['last_login' => Carbon::now()]);
+            event(new LoggedIn($user));
 
     		return response()->json([
     			'status' => true,
@@ -62,12 +71,20 @@ class MobileAuthController extends Controller
     }
 
     public function logout(){
-    	// event(new LoggedOut(Auth::user()));
-        Auth::logout();
-    	return response()->json([
-    		'status' => true,
-            'data' => array('message' => 'Thoát đăng nhập thành công')
-    	]);
+        if(Auth::check()){
+            $user = Auth::user();
+            $request->session()->put('auth.2fa.id', $user->id);
+        	event(new LoggedOut(Auth::user()));
+            Auth::logout();
+            return response()->json([
+                'status' => true,
+                'data' => array('message' => 'Thoát đăng nhập thành công')
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'data' => array('message' => 'Chưa đăng nhập')
+        ]);
     }
 
 	private function isEmail($param) {
