@@ -491,3 +491,9 @@ Route::group(['middleware' => 'web'], function(){
 	});
 
 });
+
+Route::get('crawler', function(){
+	$client = new Goutte\Client();
+	$crawler = $client->request('GET', 'http://www.scj.vn');
+	echo $crawler->filterXPath('//title/text()')->text();
+});
