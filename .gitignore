@@ -1,9 +1,9 @@
 /node_modules
 /bower_components
 /public/storage
-/public/build
 Homestead.yaml
 Homestead.json
 .env
 /config/database.php
 .htaccess
+/vendor
