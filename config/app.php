@@ -26,7 +26,7 @@ return [
 		    |
 	*/
 
-	'debug' => env('APP_DEBUG', true),
+	'debug' => env('APP_DEBUG', false),
 
 	/*
 		    |--------------------------------------------------------------------------
@@ -147,7 +147,6 @@ return [
 		Illuminate\Translation\TranslationServiceProvider::class,
 		Illuminate\Validation\ValidationServiceProvider::class,
 		Illuminate\View\ViewServiceProvider::class,
-		
 
 		/*
 			         * Application Service Providers...
@@ -157,7 +156,6 @@ return [
 		App\Providers\EventServiceProvider::class,
 		App\Providers\RouteServiceProvider::class,
 		App\Services\Auth\TwoFactor\AuthyServiceProvider::class,
-		Weidner\Goutte\GoutteServiceProvider::class,
 
 		/**
 		 * Third-Party Service Providers
@@ -175,7 +173,6 @@ return [
 		Laravelista\Ekko\EkkoServiceProvider::class,
 		Arcanedev\Localization\LocalizationServiceProvider::class,
 		Arcanedev\LogViewer\LogViewerServiceProvider::class,
-		Barryvdh\Debugbar\ServiceProvider::class,
 	],
 
 	/*
@@ -233,7 +230,7 @@ return [
 		'Settings' => anlutro\LaravelSettings\Facade::class,
 		'Authy' => App\Services\Auth\TwoFactor\Facade::class,
 		'Ekko' => Laravelista\Ekko\Facades\Ekko::class,
-		'Goutte' => Weidner\Goutte\GoutteFacade::class,
+
 	],
 
 ];

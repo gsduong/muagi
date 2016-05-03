@@ -426,7 +426,7 @@ Route::group(['prefix' => 'cron'], function(){
 
 			//crawl mobile link for product code, and mobile link of product
 			// $client = new Goutte\Client();
-			$crawler = Goutte::request('GET', $link_to_crawl);
+			$crawler = (new Goutte\Client())->request('GET', $link_to_crawl);
 			$scj_code = $crawler->filterXPath('//div[contains(@class,"infoWrap") and contains(@class,"msp")]/span[@class="col2"]/text()')->text();
 			$product_link = $mobileURL.trim($scj_code); //normalize
 
@@ -471,28 +471,21 @@ Route::group(['middleware' => 'web'], function(){
 			'uses' => 'Api\v2\MobileAuthController@postLogin'
 		]);
 
-		Route::get('logout', [
-			'as' => 'user.logout',
-			'uses' => 'Api\v2\MobileAuthController@logout'
-		]);
-
-		// Route::get('login', function(){
-		// 	return view('frontend.test.login');
-		// });
-
-		// Route::get('register', function(){
-		// 	return view('frontend.test.register');
-		// });
-
 		Route::post('register', [
 			'as' => 'user.register',
 			'uses' => 'Api\v2\MobileAuthController@postRegister'
+		]);
+
+		Route::post('searchByProductName', [
+			'as' => 'product.search',
+			'uses' => 'Api\v2\ProductController@searchByProductName'
 		]);
 	});
 
 });
 
 Route::get('crawler', function(){
-	$crawler = Goutte::request('GET', 'http://www.scj.vn');
+	$client = new Goutte\Client();
+	$crawler = $client->request('GET', 'http://www.scj.vn');
 	echo $crawler->filterXPath('//title/text()')->text();
 });

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6e7bf32bd78f29385b0aa78a013aa829",
-    "content-hash": "75f3ddfe2e4ae2d2d0b56d51a0549e33",
+    "hash": "49c4fd722306c68132edbbcaf244f11b",
+    "content-hash": "4a91b3dac14bbfe39afd3744bb30f0ab",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -281,60 +281,6 @@
                 "support"
             ],
             "time": "2016-04-17 18:12:30"
-        },
-        {
-            "name": "barryvdh/laravel-debugbar",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "7b8aaacfdeb8d0c150a390509386a2f72585ad80"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/a03ffeaa4815fdfe1030fe83885e115185883075",
-                "reference": "7b8aaacfdeb8d0c150a390509386a2f72585ad80",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "5.1.*|5.2.*",
-                "maximebf/debugbar": "~1.11.0",
-                "php": ">=5.5.9",
-                "symfony/finder": "~2.7|~3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\Debugbar\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "PHP Debugbar integration for Laravel",
-            "keywords": [
-                "debug",
-                "debugbar",
-                "laravel",
-                "profiler",
-                "webprofiler"
-            ],
-            "time": "2016-04-27 19:42:16"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -1571,12 +1517,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2ccedb67bd45eb09bd041872a0f77eb6722fb6e3"
+                "reference": "61f1afb0dc7a7e8353fc7d5f7da2c29292fdf068"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/61f1afb0dc7a7e8353fc7d5f7da2c29292fdf068",
-                "reference": "2ccedb67bd45eb09bd041872a0f77eb6722fb6e3",
+                "reference": "61f1afb0dc7a7e8353fc7d5f7da2c29292fdf068",
                 "shasum": ""
             },
             "require": {
@@ -1692,7 +1638,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-05-02 03:12:46"
+            "time": "2016-05-02 15:22:37"
         },
         {
             "name": "laravel/socialite",
@@ -1990,67 +1936,6 @@
                 "twitter"
             ],
             "time": "2015-10-23 04:02:07"
-        },
-        {
-            "name": "maximebf/debugbar",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/maximebf/php-debugbar.git",
-                "reference": "c2455dae3223ec2382f5eaa32e47b9a988e129f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/c2455dae3223ec2382f5eaa32e47b9a988e129f0",
-                "reference": "c2455dae3223ec2382f5eaa32e47b9a988e129f0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "^1.0",
-                "symfony/var-dumper": "^2.6|^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.0|^5.0"
-            },
-            "suggest": {
-                "kriswallsmith/assetic": "The best way to manage assets",
-                "monolog/monolog": "Log using Monolog",
-                "predis/predis": "Redis storage"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.11-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "DebugBar\\": "src/DebugBar/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Maxime Bouroumeau-Fuseau",
-                    "email": "maxime.bouroumeau@gmail.com",
-                    "homepage": "http://maximebf.com"
-                },
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Debug bar in the browser for php application",
-            "homepage": "https://github.com/maximebf/php-debugbar",
-            "keywords": [
-                "debug",
-                "debugbar"
-            ],
-            "time": "2016-04-29 13:30:52"
         },
         {
             "name": "monolog/monolog",
@@ -3051,12 +2936,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "653ab4b2dced462a3a0f66307e5eb7c9054fcb49"
+                "reference": "1b41dce03707e02f5d7c40c8fc40b7b59e84540e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/1aa25588241f915cf176b7c371e5d629dfff8b43",
-                "reference": "653ab4b2dced462a3a0f66307e5eb7c9054fcb49",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/1b41dce03707e02f5d7c40c8fc40b7b59e84540e",
+                "reference": "1b41dce03707e02f5d7c40c8fc40b7b59e84540e",
                 "shasum": ""
             },
             "require": {
@@ -3125,7 +3010,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2016-04-14 15:30:28"
+            "time": "2016-05-03 06:45:46"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -3648,53 +3533,6 @@
             "time": "2015-08-05 07:23:06"
         },
         {
-            "name": "weidner/goutte",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dweidner/laravel-goutte.git",
-                "reference": "929d4740785957b9abf9f09cdead6bd393894744"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dweidner/laravel-goutte/zipball/929d4740785957b9abf9f09cdead6bd393894744",
-                "reference": "929d4740785957b9abf9f09cdead6bd393894744",
-                "shasum": ""
-            },
-            "require": {
-                "fabpot/goutte": "^3.1",
-                "illuminate/support": "5.*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Weidner\\Goutte\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Weidner",
-                    "email": "hallo@danielweidner.de"
-                }
-            ],
-            "description": "Laravel 5 package for Gouette, a simple PHP Web Scraper",
-            "keywords": [
-                "goutte",
-                "laravel"
-            ],
-            "time": "2016-03-30 14:59:10"
-        },
-        {
             "name": "zizaco/entrust",
             "version": "1.7.0",
             "source": {
@@ -3883,12 +3721,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "123a68ff806be726d92e7db49eed3f36c881f099"
+                "reference": "120198f907231348a29cbcb362ec4d41ea22c1dc"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/120198f907231348a29cbcb362ec4d41ea22c1dc",
-                "reference": "123a68ff806be726d92e7db49eed3f36c881f099",
+                "reference": "120198f907231348a29cbcb362ec4d41ea22c1dc",
                 "shasum": ""
             },
             "require": {
@@ -3925,7 +3763,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29 12:42:00"
+            "time": "2016-05-02 21:13:20"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -4946,9 +4784,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "weidner/goutte": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
