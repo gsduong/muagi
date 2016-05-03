@@ -25,7 +25,8 @@
         "arcanedev/log-viewer": "^3.8",
         "weidner/goutte": "@dev",
         "doctrine/dbal": "^2.5",
-        "barryvdh/laravel-debugbar": "^2.2"
+        "barryvdh/laravel-debugbar": "^2.2",
+        "fabpot/goutte": "^3.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

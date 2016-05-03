@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "80d2587ea7fae95573efb5a160dfe7c8",
-    "content-hash": "4f1b2193d23e10d4d53d89ecb40d336c",
+    "hash": "6e7bf32bd78f29385b0aa78a013aa829",
+    "content-hash": "75f3ddfe2e4ae2d2d0b56d51a0549e33",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -292,7 +292,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/7b8aaacfdeb8d0c150a390509386a2f72585ad80",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/a03ffeaa4815fdfe1030fe83885e115185883075",
                 "reference": "7b8aaacfdeb8d0c150a390509386a2f72585ad80",
                 "shasum": ""
             },
@@ -1575,7 +1575,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2ccedb67bd45eb09bd041872a0f77eb6722fb6e3",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/61f1afb0dc7a7e8353fc7d5f7da2c29292fdf068",
                 "reference": "2ccedb67bd45eb09bd041872a0f77eb6722fb6e3",
                 "shasum": ""
             },
@@ -3055,7 +3055,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/653ab4b2dced462a3a0f66307e5eb7c9054fcb49",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/1aa25588241f915cf176b7c371e5d629dfff8b43",
                 "reference": "653ab4b2dced462a3a0f66307e5eb7c9054fcb49",
                 "shasum": ""
             },
@@ -3887,7 +3887,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/123a68ff806be726d92e7db49eed3f36c881f099",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/120198f907231348a29cbcb362ec4d41ea22c1dc",
                 "reference": "123a68ff806be726d92e7db49eed3f36c881f099",
                 "shasum": ""
             },
